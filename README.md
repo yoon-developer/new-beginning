@@ -1,2 +1,2 @@
-# toy-project (이름 미정)
+# toy-project
 
