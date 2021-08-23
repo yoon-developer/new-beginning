@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/school?characterEncoding=UTF-8&useTimezone=true&serverTimezone=Asia/Seoul
+    username: root
+    password: dyshin
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: mybatis/mapper/**/*.xml
+
+logging:
+  config: classpath:logging/Logback.xml
+
+school:
+  logging:
+    dir: ""
+    level:
+      root: info
+      web: info
+      ibatis: debug

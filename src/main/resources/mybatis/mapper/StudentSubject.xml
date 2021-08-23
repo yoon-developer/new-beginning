@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.school.student.StudentSubjectMapper">
+
+  <resultMap id="studentSubjectResult"
+    type="com.spring.school.student.domain.StudentSubject$StudentSubjectInfo">
+    <association property="subject" column="subject_id"
+      javaType="com.spring.school.subject.domain.Subject" autoMapping="true"/>
+  </resultMap>
+
+  <resultMap id="studentScoreResult"
+    type="com.spring.school.student.domain.StudentSubject$StudentScore">
+    <result property="score" column="score"/>
+    <association property="subject" column="subject_id"
+      javaType="com.spring.school.subject.domain.Subject" autoMapping="true"/>
+  </resultMap>
+
+  <resultMap id="allStudentAvgResult"
+    type="com.spring.school.student.domain.StudentSubject$AllStudentAvg">
+    <result property="average" column="average"/>
+    <association property="subject" column="subject_id"
+      javaType="com.spring.school.subject.domain.Subject" autoMapping="true"/>
+  </resultMap>
+
+  <resultMap id="studentAvgResult"
+    type="com.spring.school.student.domain.StudentSubject$StudentAvg">
+    <result property="average" column="average"/>
+    <association property="student" column="student_id"
+      javaType="com.spring.school.student.domain.Student" autoMapping="true"/>
+  </resultMap>
+
+  <select id="getStudentSubjectList" resultMap="studentSubjectResult">
+    select sj.*
+    from student_subject as ss
+           left join subject as sj on ss.subject_id = sj.subject_id
+    where ss.student_id = #{studentId}
+  </select>
+
+  <select id="getStudentSubjectScore" resultMap="studentScoreResult">
+    select score, sj.*
+    from student_subject as ss
+           left join subject as sj on ss.subject_id = sj.subject_id
+    where ss.student_id = #{studentId}
+      and ss.subject_id = #{subjectId}
+  </select>
+
+  <select id="getStudentSubjectScoreList" resultMap="studentScoreResult">
+    select score, sj.*
+    from student_subject as ss
+           left join subject as sj on ss.subject_id = sj.subject_id
+    where ss.student_id = #{studentId}
+  </select>
+
+  <select id="getAllStudentAverage" resultMap="allStudentAvgResult">
+    select sj.*, ceil(avg(score)) as average
+    from student_subject as ss
+           left join subject as sj on ss.subject_id = sj.subject_id
+    where ss.subject_id = #{subjectId}
+  </select>
+
+  <select id="getStudentAverage" resultMap="studentAvgResult">
+    select s.*, ceil(avg(score)) as average
+    from student_subject as ss
+           left join student as s on ss.student_id = s.student_id
+    where ss.student_id = #{studentId}
+  </select>
+
+  <select id="existsSubjectStudent" resultType="int">
+    select exists(select *
+                  from student_subject
+                  where student_id = #{studentId} and subject_id = #{subjectId})
+  </select>
+
+  <select id="existsSubject" resultType="int">
+    select exists(select * from student_subject where subject_id = #{subjectId})
+  </select>
+
+  <select id="existsStudent" resultType="int">
+    select exists(select * from student_subject where student_id = #{studentId})
+  </select>
+
+  <insert id="insertStudentSubject"
+    parameterType="com.spring.school.student.domain.StudentSubject">
+    INSERT INTO student_subject (student_id, subject_id, score, create_date, modified_date)
+    VALUES (#{studentId}, #{subjectId}, #{score}, now(), now())
+  </insert>
+
+  <update id="updateStudentSubjectScore"
+    parameterType="com.spring.school.student.domain.StudentSubject">
+    update student_subject
+    set score         = #{score},
+        modified_date = now()
+    where student_id = #{studentId}
+      and subject_id = #{subjectId}
+  </update>
+
+  <delete id="deleteStudentSubject">
+    delete
+    from student_subject
+    where student_id = #{studentId} and subject_id = #{subjectId}
+  </delete>
+
+</mapper>

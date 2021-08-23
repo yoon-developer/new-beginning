@@ -1,0 +1,91 @@
+<configuration>
+
+  <springProperty scope="context" name="LOG_LEVEL_ROOT" source="school.logging.level.root"/>
+  <springProperty scope="context" name="LOG_LEVEL_WEB" source="school.logging.level.web"/>
+  <springProperty scope="context" name="LOG_LEVEL_IBATIS" source="school.logging.level.ibatis"/>
+
+  <springProperty scope="context" name="LOG_DIR" source="school.logging.dir"/>
+
+  <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <Pattern>
+        %d{yyyy-MM-dd HH:mm:ss} [%thread] [%-5level] %logger{36} - %msg%n
+      </Pattern>
+      <charset>UTF-8</charset>
+    </encoder>
+  </appender>
+
+  <!--
+    <appender name="File" class="ch.qos.logback.core.rolling.RollingFileAppender">
+      <file>${LOG_DIR}/school.log</file>
+      <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+        <Pattern>
+          %d{yyyy-MM-dd HH:mm:ss} [%-5level] %logger{36} - %msg%n
+        </Pattern>
+        <charset>UTF-8</charset>
+      </encoder>
+
+      <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <fileNamePattern>${LOG_DIR}/school/school.%d{yyyy-MM-dd}.log</fileNamePattern>
+        <maxHistory>30</maxHistory>
+      </rollingPolicy>
+    </appender>
+
+    <appender name="RollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+      <file>${LOG_DIR}/archived/school_roling.log</file>
+      <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+        <Pattern>%d{yyyy-MM-dd HH:mm:ss} [%-5level] %logger{36} - %msg%n</Pattern>
+        <charset>UTF-8</charset>
+      </encoder>
+
+      <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+        <MaxFileSize>10MB</MaxFileSize>
+      </triggeringPolicy>
+
+      <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+        <FileNamePattern>${LOG_DIR}/archived/school_roling.%i.log.zip</FileNamePattern>
+        <MinIndex>1</MinIndex>
+        <MaxIndex>10</MaxIndex>
+      </rollingPolicy>
+    </appender>
+
+    <appender name="Error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+      <filter class="ch.qos.logback.classic.filter.LevelFilter">
+        <level>error</level>
+        <onMatch>ACCEPT</onMatch>
+        <onMismatch>DENY</onMismatch>
+      </filter>
+      <file>${LOG_DIR}/school-error.log</file>
+      <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+        <Pattern>
+          %d{yyyy-MM-dd HH:mm:ss} [%-5level] %logger{36} - %msg%n
+        </Pattern>
+        <charset>UTF-8</charset>
+      </encoder>
+
+      <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <fileNamePattern>${LOG_DIR}/school/school-error.%d{yyyy-MM-dd}.log</fileNamePattern>
+        <maxHistory>30</maxHistory>
+      </rollingPolicy>
+    </appender>
+  -->
+
+  <logger name="org.springframework.web" level="${LOG_LEVEL_WEB}" additivity="false">
+    <appender-ref ref="Console"/>
+    <!--    <appender-ref ref="File"/>-->
+    <!--    <appender-ref ref="Error"/>-->
+  </logger>
+
+  <logger name="org.apache.ibatis" level="${LOG_LEVEL_IBATIS}" additivity="false">
+    <appender-ref ref="Console"/>
+    <!--    <appender-ref ref="RollingFile"/>-->
+    <!--    <appender-ref ref="Error"/>-->
+  </logger>
+
+  <root level="${LOG_LEVEL_ROOT}">
+    <appender-ref ref="Console"/>
+    <!--    <appender-ref ref="File"/>-->
+    <!--    <appender-ref ref="Error"/>-->
+  </root>
+
+</configuration>

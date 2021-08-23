@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.school.academy.AcademyMapper">
+
+  <select id="getAcademy" resultType="com.spring.school.academy.domain.Academy">
+    SELECT academy_id, academy_name, description, create_date, modified_date
+    FROM academy where academy_id = #{academyId}
+  </select>
+
+  <select id="getAcademyList" resultType="com.spring.school.academy.domain.Academy">
+    SELECT academy_id, academy_name, description, create_date, modified_date
+    FROM academy
+  </select>
+
+
+  <select id="existsAcademy" resultType="int">
+    select exists(select * from academy where academy_id = #{academyId})
+  </select>
+
+  <insert id="insertAcademy" parameterType="com.spring.school.academy.domain.Academy"
+    useGeneratedKeys="true"
+    keyProperty="academyId">
+    INSERT INTO academy (academy_name, description, create_date, modified_date)
+    VALUES (#{academyName}, #{description}, now(), now())
+  </insert>
+
+  <delete id="deleteAcademy">
+    delete
+    from academy
+    where academy_id = #{academyId}
+  </delete>
+
+</mapper>

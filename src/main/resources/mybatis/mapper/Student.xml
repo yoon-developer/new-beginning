@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.school.student.StudentMapper">
+
+  <select id="getStudent" resultType="com.spring.school.student.domain.Student">
+    select *
+    from student
+    where academy_id = #{academyId} and student_id = #{studentId}
+  </select>
+
+  <select id="getStudentList" resultType="com.spring.school.student.domain.Student">
+    select *
+    from student
+    where academy_id = #{academyId}
+  </select>
+
+  <select id="existsStudent" resultType="int">
+    select exists(select * from student where student_id = #{studentId})
+  </select>
+
+  <select id="existsAcademy" resultType="int">
+    select exists(select * from student where academy_id = #{academyId})
+  </select>
+
+  <insert id="insertStudent" parameterType="com.spring.school.student.domain.Student" useGeneratedKeys="true"
+    keyProperty="studentId">
+    INSERT INTO student (academy_id, student_name, student_grade, parent_phone_number, school_name, birthday,
+                         student_phone_number, home_address, home_phone_number, create_date,
+                         modified_date)
+    VALUES (#{academyId}, #{studentName}, #{studentGrade}, #{parentPhoneNumber}, #{schoolName}, #{birthday},
+            #{studentPhoneNumber}, #{homeAddress}, #{homePhoneNumber}, now(), now())
+  </insert>
+
+  <delete id="deleteStudent">
+    delete
+    from student
+    where student_id = #{studentId} and academy_id = #{academyId}
+  </delete>
+
+</mapper>

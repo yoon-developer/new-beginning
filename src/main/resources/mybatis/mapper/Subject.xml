@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.school.subject.SubjectMapper">
+
+  <select id="getSubject" resultType="com.spring.school.subject.domain.Subject">
+    select *
+    from subject
+    where subject_id = #{subjectId}
+  </select>
+
+  <select id="getSubjetctList" resultType="com.spring.school.subject.domain.Subject">
+    select *
+    from subject
+  </select>
+
+  <select id="existsSubjetct" resultType="int">
+    select exists(select * from subject where subject_id = #{subjectId})
+  </select>
+
+  <insert id="insertSubject" parameterType="com.spring.school.subject.domain.Subject"
+    useGeneratedKeys="true"
+    keyProperty="subjectId">
+    INSERT INTO subject (subject_name, school, subject_grade, publisher, create_date)
+    VALUES (#{subjectName}, #{school}, #{subjectGrade}, #{publisher}, now())
+  </insert>
+
+  <delete id="deleteSubject">
+    delete
+    from subject
+    where subject_id = #{subjectId}
+  </delete>
+
+</mapper>
